@@ -9,85 +9,60 @@
 '''
 
 class Node:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, val):
+        self.data = val 
         self.next = None
 
-
-class LinkedList:
+class LL:
     def __init__(self):
         self.head = None
 
-    def print_ll(self):
-        temp = self.head 
+    def summing(self, one, two):
+        carry = 0
+        lst = []
+        while one or two:
+            val_1 = one.data if one is not None else 0
+            val_2 = two.data if two is not None else 0
+            summ = val_1 + val_2 + carry
+            if summ > 9:
+                val = summ - 10
+                carry = 1
+            else:
+                val = summ 
+                carry = 0
+            lst.append(str(val))
+            if one is None:
+                one = None
+            else:
+                one = one.next 
+            if two is None:
+                two = None
+            else:
+                two = two.next
+        print(''.join(lst[::-1]))            
+        
+
+    def display(self):
+        temp = self.head
         while temp:
             print(temp.data, end=' ')
             temp = temp.next 
-        print() 
+        print()    
 
-    def add_ll(self, one, two):
-        val_one = 0
-        val_two = 0
-        carry = 0
-        val = 0
-        temp = None
-        while (one is not None or two is not None):
-            if one is not None:
-                val_one = one.data  
-            else:
-                val_one = 0
-            if two is not None:
-                val_two = two.data 
-            else:
-                val_two = 0
-
-            val = val_one + val_two + carry
-            if val > 9:
-                val = val - 10 
-                carry = 1
-            else:
-                val = val 
-                carry = 0
-
-            node = Node(val)
-            if self.head is None:
-                self.head = node  
-            else:
-                temp.next = node 
-            temp = node
-
-            if one is not None:
-                one = one.next 
-            if two is not None:
-                two = two.next    
-        if carry > 0:
-            temp.next = Node(carry)        
-        # return temp         
-
-
-ll = LinkedList()
-one = Node(7)
-two = Node(5)
-three = Node(9)        
-four = Node(4)
-five = Node(6)       
+ll = LL()
+one = Node(5)
+two = Node(6)
+three = Node(3)
 ll.head = one 
 one.next = two 
-two.next = three 
-three.next = four
-four.next = five
+two.next = three
 
-mm = LinkedList()
-onem = Node(8)
-twom = Node(4)
-threem = Node(2)        
-fourm = Node(7)       
-mm.head = onem 
-onem.next = twom 
-twom.next = threem 
-threem.next = fourm
+mm = LL()
+a = Node(8)
+b = Node(4)
+c = Node(2)
+mm.head = a
+a.next = b
+b.next = c
 
-nn = LinkedList()
-nn.add_ll(ll.head, mm.head)
-nn.print_ll()
-print('end')
+ll.summing(ll.head, mm.head)
