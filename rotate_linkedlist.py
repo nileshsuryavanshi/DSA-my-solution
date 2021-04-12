@@ -3,65 +3,61 @@
 '''
 
 class Node:
-    def __init__(self, data):
-        self.data = data
+    count = 0
+    def __init__(self, val):
+        self.data = val 
         self.next = None
+        Node.count += 1
 
-
-class LinkedList:
+class LL:
     def __init__(self):
         self.head = None
 
-    def print_ll(self):
-        temp = self.head 
+
+    def rotate(self, position):
+        # if position is less than size of linked list
+        # and is positive
+        if position < Node.count and position >= 0:
+            k = 0
+            temp = self.head
+            while temp.next:
+                if k == position - 1:
+                    prev = temp
+                    nest = temp.next 
+                if position == 0:
+                    return    
+                temp = temp.next
+                k += 1
+            prev.next = None
+            temp.next = self.head
+            self.head = nest       
+        # if position is negative or more than linked list size
+        # then return     
+        else:
+            return
+
+
+    def display(self):
+        temp = self.head
         while temp:
             print(temp.data, end=' ')
             temp = temp.next 
-        print() 
+        print()    
 
-    def length(self):
-        temp = self.head 
-        i = 0
-        while temp:
-            temp = temp.next
-            i += 1    
-        return i
-
-    def rotate(self, k):
-        current = self.head 
-        next_k = None
-        count = 1
-        if k == self.length():
-            '''
-               return if the value of k is equal to the length of linked list
-            '''
-            return
-
-        while current:
-            if count == k:
-                next_k = current.next 
-                current.next = None
-                break 
-            current = current.next
-            count += 1
-        current = next_k    
-        while current.next:
-            current = current.next 
-        current.next = self.head
-        self.head = next_k         
-
-
-ll = LinkedList()
-one = Node(7)
-two = Node(5)
-three = Node(9)        
-four = Node(4)
-five = Node(6)       
+ll = LL()
+one = Node(5)
+two = Node(6)
+three = Node(3)
+four = Node(8)
+five = Node(9)
+six = Node(10)
 ll.head = one 
 one.next = two 
-two.next = three 
-three.next = four
-four.next = five
+two.next = three
+three.next = four 
+four.next = five 
+five.next = six 
 
-ll.rotate(1)
-ll.print_ll()
+ll.display()
+ll.rotate(3)
+ll.display()
