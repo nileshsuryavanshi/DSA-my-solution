@@ -1,50 +1,56 @@
 class Node:
+    # node to store data and reference to next node
     def __init__(self, data):
         self.data = data 
-        self.next = None
+        self.next = None 
 
 class Stack:
     def __init__(self):
+        # initialising head which will work as top
         self.head = None
 
     def isEmpty(self):
-        return True if self.head is None else False 
+        # if head is none then true otherwise false
+        return self.head is None
 
-    def push(self, data):
-        node = Node(data)
-        node.next = self.head 
-        self.head = node 
+    def push(self, val):
+        # pushing new node and updating top(head)
+        node = Node(val)
+        node.next = self.head
+        self.head = node
 
     def pop(self):
+        # if stack is empty then show message "Stack Underflow"
         if self.isEmpty():
             print('Stack Underflow')
             return 
-        temp = self.head 
-        self.head = self.head.next 
-        popped = temp.data 
-        print('The popped element is :', popped)
+        # otherwise remove node and update top(head)
+        print('The popped element is:', self.head.data)     
+        self.head = self.head.next
 
     def peek(self):
+        # if stack is empty then show message given below
         if self.isEmpty():
-            print('Stack Underflow')
-            return
-        print('The peek element is :', self.head.data)
+            print('There is no element in stack')
+            return 
+        # otherwise show top(head) element    
+        print(self.head.data)      
 
-    def show(self):
-        temp = self.head
-        if temp is None:
-            print('The stack is empty') 
-        while temp:
-            print(temp.data, end=' ')
-            temp = temp.next 
-        print()
 
 st = Stack()
+print(st.isEmpty())
 st.push(1)
+print(st.isEmpty())
 st.push(2)
 st.push(3)
-st.show()            
+st.push(4)
+st.push(5)
 st.pop()
 st.pop()
 st.pop()
 st.pop()
+print(st.isEmpty())
+st.pop()
+print(st.isEmpty())
+st.pop()
+print(st.isEmpty())
