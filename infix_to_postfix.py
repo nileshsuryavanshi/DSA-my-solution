@@ -3,92 +3,96 @@
 '''
 
 class Stack:
-    def __init__(self):
-        # stack to store operators only
-        self.stack = [] 
-        # list to store output
-        self.output = [] 
-        self.operators = {'^':3, '*':2, '/':2, '+':1, '-':1}
+    def __init__(self, n):
+        self.size = n 
+        self.stack = [None]*n 
+        self.top = -1 
+        self.order = {'^':4, '*':3, '%':3, '/':3, '+':2, '-':2, '=':1}
 
 
     def isEmpty(self):
-        # return True if stack is empty otherwise False
-        return True if len(self.stack) == 0 else False  
+        # return true if stack is empty otherwise false
+        return self.top == -1
 
 
-    def push(self, data):
-        # push element into stack
-        self.stack.append(data)
+    def push(self, val):
+        # if top == size-1 then show "stack overflow" else push element in stack 
+        if self.top == (self.size - 1):
+            print('Stack Overflow')
+            return 
+        self.top += 1 
+        self.stack[self.top] = val 
 
 
     def pop(self):
-        # pop elemnt from stack
-        if self.isEmpty():
-            return 
-        return self.stack.pop()
+        # if top == -1 then show "stack underflow" else pop the element
+        if self.top == -1:
+            print('Stack Underflow')
+            return
+        popped = self.stack[self.top]
+        self.top -= 1 
+        return popped
 
 
     def peek(self):
-        # return the last element in stack
-        if self.isEmpty():
-            return 
-        return self.stack[-1]
-
-
-    def isOperator(self, s):
-        # taking the top element from stack
-        top = self.peek()
-        if self.isEmpty() or top == "(":
-            self.push(s)
+        # show the top element of stack
+        if self.top == -1:
+            return None 
         else:
-            '''
-               compare if the precedence of current element(s) is less than top element from the stack
-               if it is less than pop the top element from the stack and check again until the precedence
-               of top < s.
-            ''' 
-            while self.operators[s] <= self.operators[top]:
+            return self.stack[self.top]        
+
+
+    def paren(self, s):
+        # if s is "(" then directly push it
+        if s == '(':
+            self.push(s)   
+        # else pop everything until we get "("    
+        else:
+            while self.peek() != '(':
                 popped = self.pop()
-                self.output.append(popped)
-                if not self.isEmpty():
-                    top = self.peek()
-                    # break the loop if top element is open paranthesis
-                    if top == "(":
-                        break 
-                else:
-                    break    
-            # push the element s     
-            self.push(s) 
+                self.stt += popped 
+            self.pop()                        
 
 
-    def parenCheck(self, s):
-        if s == "(":
+    def operator(self, s):
+        # getting the top element
+        peek = self.peek()
+        # if peek is None or "(" then push s directly
+        if peek is None or peek == '(':
             self.push(s)
-        else:
+            return
+        if peek == '^' and s == '^':
+            self.push(s)  
+            return
+        # pop operator if the precedence of peek element is higher than s    
+        while self.order[peek] >= self.order[s]:
             popped = self.pop()
-            while popped != "(":
-                # push until we get open paranthesis
-                self.output.append(popped)
-                popped = self.pop()  
+            self.stt += popped
+            peek = self.peek()
+            if peek is None or peek == '(':
+                break
+        self.push(s)  
 
 
-    def toPostfix(self, string):
+    def infixToPrefix(self, string):
+        self.stt = ''
+        # iterate characters from string
         for s in string:
             if s.isalpha():
-                # if the element of string is alphabet then directly append it to output list
-                self.output.append(s)
-            elif s in self.operators:
-                # if it is an operator then call the isOperator() method
-                self.isOperator(s)
-            elif (s == "(" or s == ")"):
-                # if it is parenthesis then call parenCheck() method
-                self.parenCheck(s)             
-
+                self.stt += s 
+            elif s == '(' or s == ')':
+                self.paren(s)
+            elif s in self.order: 
+                self.operator(s)  
+        
+        # pop all the element present in stack and add them to string one by one
         while not self.isEmpty():
-            # add element to output list until the stack get empty
-            popped = self.pop()
-            self.output.append(popped)
+            popped = self.pop() 
+            self.stt += popped 
+        # lastly display the final prefix expression    
+        print(self.stt)                    
 
 
-st = Stack()
-st.toPostfix("a*(b+c*d)+e")
-print(''.join(st.output))
+# initializing stack object 
+st = Stack(35)
+st.infixToPrefix('a^b^c*d')
