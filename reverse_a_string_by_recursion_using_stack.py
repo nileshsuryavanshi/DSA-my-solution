@@ -1,7 +1,3 @@
-'''
-   Time complexity: O(n^2)
-'''
-
 class Stack:
     def __init__(self):
         # stack to store numerical value
