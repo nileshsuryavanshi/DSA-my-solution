@@ -1,68 +1,80 @@
-class SpecialStack:
+class Stack:
     def __init__(self, n):
-        self.size = n
-        self.stack = [None]*n
-        self.aux = [None]*n
-        self.top = -1
+        self.size = n 
+        self.stack = [None]*n 
+        self.top = -1 
+        self.minStack = [None]*n # stack to store minimum values
+
 
     def isEmpty(self):
-        print(True if self.top == -1 else False) 
+        # return true if stack is empty otherwise false
+        return self.top == -1
 
-    def push(self, data):
-        # push element into stack
-        if self.top < self.size - 1:
-            self.top += 1
-            self.stack[self.top] = data
-
-            if self.aux[0] is None:
-                self.aux[self.top] = data
-            else:
-                # if the element we want to push is greater than the previous one then push again the previous one
-                if data > self.aux[self.top - 1]:
-                    self.aux[self.top] = self.aux[self.top - 1]
-                # otherwise push the new element    
-                else:
-                    self.aux[self.top] = data            
-        else:
-            print('Stack Overflow')
-
-    def pop(self):
-        # pop elemnt from stack
-        if self.top >= 0:
-            print('The popped element is :', self.stack[self.top])
-            self.top -= 1
-        else:
-            print('Stack Underflow')
 
     def peek(self):
-        # return the last element in stack
+        # show the top element of stack
         if self.top == -1:
-            print(None)
-        else:    
-            print(self.stack[self.top])
+            return None 
+        else:
+            return self.stack[self.top]      
+
 
     def isFull(self):
         # return true if stack is full otherwise false
-        print(True if self.top == self.size - 1 else False) 
+        return self.top == self.size - 1           
+
+
+    def push(self, val):
+        # if top == size-1 then show "stack overflow" else push element in stack 
+        if self.top == (self.size - 1):
+            print('Stack Overflow')
+            return   
+        self.top += 1 
+        self.stack[self.top] = val 
+        # if the element is first element then directly push it into minStack
+        if self.top == 0:
+            self.minStack[self.top] = val
+
+        # if the peek element of stack is less than the last element in minStack then 
+        # push peek element of stack in minStack    
+        elif self.peek() < self.minStack[self.top - 1]:
+            self.minStack[self.top] = self.peek()
+
+        # otherwise push the last element of minStack into minStack    
+        else:
+            self.minStack[self.top] = self.minStack[self.top - 1]        
+
+
+    def pop(self):
+        # if top == -1 then show "stack underflow" else pop the element
+        if self.top == -1:
+            print('Stack Underflow')
+            return
+        # popped = self.stack[self.top]
+        self.top -= 1 
+        # return popped 
+
 
     def getMin(self):
-        # getting the minimum value of stack
-        print(self.aux[self.top])           
+        # function to get min value present in stack
+        print(self.minStack[self.top])        
 
-st = SpecialStack(5)
-st.push(18)
+
+# initializing stack object 
+st = Stack(6)
+st.push(10)
+st.push(0)
+st.push(5)
+st.push(2)
+st.push(-1)
+st.push(98)
 st.getMin()
-st.push(19)
-st.getMin()        
-st.push(29)
-st.getMin()
-st.push(15)
-st.getMin()
-st.push(16)
-st.getMin()
-st.isEmpty()
-st.isFull()
+st.pop()
 st.pop()
 st.getMin()
 st.pop()
+st.pop()
+st.getMin()
+st.push(-2)
+st.push(52)
 st.getMin()
