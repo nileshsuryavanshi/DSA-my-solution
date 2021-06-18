@@ -30,8 +30,8 @@ def construct2(preList, inList):  # O(n)
     root = Node(preList[0])
     inMap = dict(zip(inList, range(len(inList))))
     mid = inMap[preList[0]]
-    root.left = construct(preList[1:mid+1], inList[:mid])
-    root.right = construct(preList[mid+1:], inList[mid+1:])
+    root.left = construct2(preList[1:mid+1], inList[:mid])
+    root.right = construct2(preList[mid+1:], inList[mid+1:])
     return root
 
 # fuctions to check pre-order, in-order and post-order traversal for constructed binary tree
