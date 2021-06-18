@@ -20,8 +20,8 @@ def construct(postList, inList):   # O(n^2)
         return None
     root = Node(postList[-1])
     mid = inList.index(postList[-1])
-    root.left = construct2(postList[:mid], inList[:mid])
-    root.right = construct2(postList[mid:-1], inList[mid+1:])
+    root.left = construct(postList[:mid], inList[:mid])
+    root.right = construct(postList[mid:-1], inList[mid+1:])
     return root
 
 def construct2(postList, inList):  # O(n)
