@@ -12,21 +12,17 @@ class Node:
         self.left = self.right = None 
 
 # function to find nodes at k distance
-def elements(root, count, k):
+def nodesAt(k, count, root):
     if root:
-        # if k is 0, then print the value and exit from the function
-        if k == 0:
-            print(root.data, end=' ')
-            return
+        # if count == k then print the node value
         if count == k:
-            if root.left:
-                print(root.left.data, end=' ')
-            if root.right:
-                print(root.right.data, end=' ')
-        # increase count with each call
+            print(root.data, end=' ')
         count += 1
-        elements(root.left, count, k)
-        elements(root.right, count, k)
+        # do not exceed value of k
+        if count <= k:
+            # apply the same function on both side of node
+            nodesAt(k, count, root.left)
+            nodesAt(k, count, root.right)
 
 '''
             1
@@ -53,5 +49,5 @@ root.left.right = Node(5)
 # finding nodes at each of distance/level
 for i in range(3):
     print(f'Elements at level {i} are :', end=' ')
-    elements(root, 1, i)
+    nodesAt(i, 0, root)
     print()
